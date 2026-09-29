@@ -26,18 +26,19 @@ const app = express();
 */
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://ai-powered-legal-case-management-sy.vercel.app/",
-  "https://ai-powered-legal-case-management-sy-b7abofyhs.vercel.app/"
-
+  "https://ai-lms-w.vercel.app",
 ];
 
 app.use(cors({
   origin: function (origin, callback) {
-    // Allow requests with no origin, like browser direct visits or server-to-server checks
-    if (!origin || allowedOrigins.includes(origin)) {
+    if (
+      !origin ||
+      allowedOrigins.includes(origin) || /^https:\/\/[a-z0-9-]+-tanitees-projects\.vercel\.app$/.test(origin)
+      // preview deployments
+    ) {
       callback(null, true);
     } else {
-      callback(new Error("Not allowed by CORS"));
+      callback(null, false); // reject without throwing a 500
     }
   },
   credentials: true
